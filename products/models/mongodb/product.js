@@ -5,13 +5,18 @@ const productSchema = new mongoose.Schema({
     name:{
         type: String,
         required:true,
-        match: RegExp(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/),
+        minlength:2,
+        trim: true,
+        lowercase: true,
+
 
     },
     description:{
         type: String,
         required:true,
-        match: RegExp(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/),
+        minlength:2,
+        trim: true,
+        lowercase: true,
 
     },
 
@@ -28,14 +33,18 @@ const productSchema = new mongoose.Schema({
     imageAlt:{
         type: String,
         required:true,
-        match: RegExp(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/),
+        minlength:3,
 
     },
 
     price:{
         type: Number,
         required:true,
-        match: RegExp(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/),
+        minlength:1,
+    },
+
+    productId:{
+        type:mongoose.Schema.Types.ObjectId,
     }
 })
 
