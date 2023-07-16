@@ -6,19 +6,19 @@ const Product = require("../models/mongodb/product")
 
 router.get("/", async (req,res)=>{
 
-try{
+    try{
 
-    const products = await Product.find();
-    res.send(products);
+        const products = await Product.find();
+        res.send(products);
 
-}catch(err){
+    }catch(err){
 
-    errorService(err,res);
+        errorService(err,res);
 
-}
+    }
 
 
-})
+    })
 
 
 
