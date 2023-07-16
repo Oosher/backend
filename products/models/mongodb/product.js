@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
         minlength:2,
         trim: true,
         lowercase: true,
+        unique:true,
 
 
     },

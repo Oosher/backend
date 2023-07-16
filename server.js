@@ -3,6 +3,7 @@ const express = require("express");
 const connectToDb = require("./mongodb/connectToMongoDb");
 const cors =require("cors");
 const router = require("./router/router");
+const morganLogger = require("./morgan/morganLogger");
 
 
 const api = express();
@@ -12,6 +13,10 @@ api.use(cors({
     optionsSuccessStatus:200,
 
 }));
+
+
+
+api.use(morganLogger);
 api.use(express.json());
 
 api.use(router);
