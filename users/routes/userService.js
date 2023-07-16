@@ -7,7 +7,7 @@ router.get("/:id", async (req,res)=>{
 
     try{
 
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id,{password:0,__v:0});
         res.send(user);
 
     }
