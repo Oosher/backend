@@ -35,8 +35,6 @@ router.get("/:id",async(req,res)=>{
 })
 
 
-
-
 router.post("/createnewproduct",async (req,res)=>{
 
     try{
@@ -56,10 +54,10 @@ router.post("/createnewproduct",async (req,res)=>{
 })
 
 
-//updates the stock
-router.put("/:id/:amount",async (req,res)=>{
+//updates the product
+router.put("/:id",async (req,res)=>{
     try{
-        const product = await Product.findByIdAndUpdate(req.params.id,{$inc:{stock:req.params.amount}},{new:true});
+        const product = await Product.findByIdAndUpdate(req.params.id,req.body,{new:true});
             res.send(product)
 
     }catch(err){
