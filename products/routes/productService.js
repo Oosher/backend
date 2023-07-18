@@ -2,7 +2,8 @@
 const express = require("express");
 const errorService = require("../../errorHandling/errorService");
 const router = express.Router();
-const Product = require("../models/mongodb/product")
+const Product = require("../models/mongodb/product");
+const auth = require("../../auth/auth");
 
 router.get("/", async (req,res)=>{
 
@@ -70,7 +71,7 @@ router.put("/:id",async (req,res)=>{
 })
 
 
-router.delete("/:id",async(req,res)=>{
+router.delete("/:id",auth,async(req,res)=>{
     
     try{
         const deletedProduct = await Product.findByIdAndDelete(req.params.id);
