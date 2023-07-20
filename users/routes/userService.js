@@ -4,6 +4,7 @@ const User = require("../models/mongodb/user");
 const errorService = require("../../errorHandling/errorService");
 const { generateToken } = require("../../auth/jwt/jwt");
 const auth = require("../../auth/auth");
+const { encryptPassword, comperePass } = require("../../utils/bcrypt/brypt");
 
 router.get("/:id", async (req,res)=>{
 
@@ -31,8 +32,9 @@ router.get("/:id", async (req,res)=>{
 router.post("/newuser",async(req,res)=>{
 
     try{
+        req.body.password= encryptPassword(req.body.password)
+        const newUser = new User(req.body);
 
-        const newUser = new User(req.body)
         await newUser.save();
         res.send(newUser);
 
@@ -53,8 +55,7 @@ router.put("/login",async (req,res)=>{
         const user = await User.findOne({email:req.body.email})
         
         if(!user) errorService("Incorrect login info",res);
-
-        if (user.password === req.body.password) {
+        if (comperePass(req.body.password,user.password)) {
 
             res.send(generateToken(user));
 
