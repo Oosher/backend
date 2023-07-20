@@ -80,6 +80,11 @@ router.put("/login",async (req,res)=>{
 router.put("/:id",auth,async(req,res)=>{
 
     try{
+        if (req.body.password) {
+
+            req.body.password = encryptPassword(req.body.password);    
+        
+        }
         await User.findByIdAndUpdate(req.params.id,req.body,{new:true})
 
         res.send("User has been updated successfully ")
