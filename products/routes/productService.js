@@ -4,6 +4,7 @@ const errorService = require("../../errorHandling/errorService");
 const router = express.Router();
 const Product = require("../models/mongodb/product");
 const auth = require("../../auth/auth");
+const productImageValidation = require("../joi/joiscema");
 
 router.get("/", async (req,res)=>{
 
@@ -36,15 +37,33 @@ router.get("/:id",async(req,res)=>{
 })
 
 
-router.post("/createnewproduct",async (req,res)=>{
+router.post("/createnewproduct",auth,async (req,res)=>{
 
     try{
-    const product = new Product(req.body);
+        let errExst= false;
+        req.body.imageArray.map((image)=>{
+            let {error} =productImageValidation(image);
+            if(error){
+                console.log(error);
+                errExst = true;
+                return errorService(error.details[0].message,res)
+            }
+        })
+        
 
-    await product.save();
 
 
-    res.send(product);
+
+        if (!errExst) {
+            const product = new Product(req.body);
+
+            await product.save();
+
+
+            res.send(product);
+        }
+
+        
 
     }catch(err){
         errorService(err,res);
@@ -56,7 +75,7 @@ router.post("/createnewproduct",async (req,res)=>{
 
 
 //updates the product
-router.put("/:id",async (req,res)=>{
+router.put("/:id",auth,async (req,res)=>{
     try{
         const product = await Product.findByIdAndUpdate(req.params.id,req.body,{new:true});
             res.send(product)
