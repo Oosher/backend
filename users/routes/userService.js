@@ -54,7 +54,8 @@ router.put("/login",async (req,res)=>{
 
         const user = await User.findOne({email:req.body.email})
         
-        if(!user) errorService("Incorrect login info",res);
+        if(!user) errorService("Incorrect login info",res)
+        else{
         if (comperePass(req.body.password,user.password)) {
 
             res.send(generateToken(user));
@@ -64,6 +65,7 @@ router.put("/login",async (req,res)=>{
             errorService("Incorrect login info",res);
 
         }
+    }
         
 
     }catch(err){
