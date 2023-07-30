@@ -56,6 +56,7 @@ router.put("/login",async (req,res)=>{
         
         if(!user) errorService("Incorrect login info",res)
         else{
+        if (await comperePass(req.body.password,user.password)) {
                 
             res.send(generateToken(user));
 
