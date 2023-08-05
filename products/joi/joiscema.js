@@ -14,7 +14,6 @@ const productImageValidation =  (image) => {
         imageAlt:Joi.string().ruleset.min(3).rule({message:"must include an image alt"}).required(),
 
 
-
     })
     return schema.validate(image);
 
