@@ -5,6 +5,7 @@ const router = express.Router();
 const Product = require("../models/mongodb/product");
 const auth = require("../../auth/auth");
 const productImageValidation = require("../joi/joiscema");
+const firstProductValidation = require("../joi/firstProductValidation.js");
 
 router.get("/", async (req,res)=>{
 
@@ -41,12 +42,13 @@ router.post("/createnewproduct",auth,async (req,res)=>{
 
     try{
         let errExst= false;
+        firstProductValidation(req.body.imageArray[0]);
         req.body.imageArray.map((image)=>{
-            let {error} =productImageValidation(image);
+            let {error} = productImageValidation(image);
             if(error){
                 console.log(error);
                 errExst = true;
-                return errorService(error.details[0].message,res)
+                return error.details[0].message
             }
         })
         
