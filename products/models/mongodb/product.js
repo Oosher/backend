@@ -51,7 +51,11 @@ const productSchema = new mongoose.Schema({
         required:true,
         minlength:1,
     },
-
+    category:{
+        type:String,
+        required:true,
+        minlength:2,
+    },
     productId:{
         type:mongoose.Schema.Types.ObjectId,
     }
