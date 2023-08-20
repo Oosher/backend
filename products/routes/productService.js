@@ -2,10 +2,11 @@
 const express = require("express");
 const errorService = require("../../errorHandling/errorService");
 const router = express.Router();
-const Product = require("../models/mongodb/product");
+const {Product} = require("../models/mongodb/product");
 const auth = require("../../auth/auth");
 const productImageValidation = require("../joi/joiscema");
 const firstProductValidation = require("../joi/firstProductValidation.js");
+const Order = require("../models/mongodb/orders");
 
 router.get("/", async (req,res)=>{
 
@@ -80,7 +81,8 @@ router.post("/createnewproduct",auth,async (req,res)=>{
 router.put("/:id",auth,async (req,res)=>{
     try{
         const product = await Product.findByIdAndUpdate(req.params.id,req.body,{new:true});
-            res.send(product)
+        
+        res.send(product)
 
     }catch(err){
 
@@ -115,5 +117,27 @@ router.delete("/:id",auth,async(req,res)=>{
 
 
 })
+
+
+
+router.post("/neworder",auth,async (req,res)=>{
+
+    try{
+
+        const newOrder = new Order(req.body);
+
+        await newOrder.save();
+
+        res.send(newOrder);
+
+    }catch(err){
+
+        errorService(err,res)
+
+    }
+
+
+})
+
 
 module.exports= router;
