@@ -7,6 +7,7 @@ const auth = require("../../auth/auth");
 const productImageValidation = require("../joi/joiscema");
 const firstProductValidation = require("../joi/firstProductValidation.js");
 const Order = require("../models/mongodb/orders");
+const User = require("../../users/models/mongodb/user");
 
 router.get("/", async (req,res)=>{
 
@@ -133,6 +134,35 @@ router.post("/neworder",auth,async (req,res)=>{
     }catch(err){
 
         errorService(err,res)
+
+    }
+
+
+})
+
+
+
+
+
+router.get("/orders/:email/:userName",auth,async(req,res)=>{
+
+
+    try{
+
+
+        const user = await User.find({email:req.params.email});
+        
+        
+        if (req.params.userName=== user[0].name.first ) {
+            res.send(await Order.find({email:req.params.email}))
+        }else(
+            errorService("the user doesn't mach our database",res)
+        ) 
+        
+
+    }catch(err){
+
+        errorService(err.message,res);
 
     }
 
