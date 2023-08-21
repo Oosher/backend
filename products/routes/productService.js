@@ -170,4 +170,29 @@ router.get("/orders/:email/:userName",auth,async(req,res)=>{
 })
 
 
+
+router.get("/orders/allorders/:email/:firstname",auth,async (req,res)=>{
+
+    try{
+
+        const user = await User.find({email:req.params.email});
+
+        if (user[0]?.name.first === req.params.firstname && user[0]?.isAdmin) {
+
+            return res.send(await Order.find())
+            
+        }
+
+        return errorService("The user is not authorized", res)
+
+    }catch(err){
+
+        errorService(err,res);
+
+    }
+
+
+})
+
+
 module.exports= router;
