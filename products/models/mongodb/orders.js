@@ -55,7 +55,11 @@ const orderSchema = new mongoose.Schema({
         min:1,
         required:true,
     },
+    orderStatus:{
+        type:String,
+        default:"Order Accepted"
 
+    },
     OrderId:{
         type:mongoose.Schema.Types.ObjectId,
     },

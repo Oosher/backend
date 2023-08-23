@@ -9,6 +9,10 @@ const firstProductValidation = require("../joi/firstProductValidation.js");
 const Order = require("../models/mongodb/orders");
 const User = require("../../users/models/mongodb/user");
 
+
+const orderStatuses=["Order Accepted", "In delivery" , "Delivered" ]
+
+
 router.get("/", async (req,res)=>{
 
     try{
@@ -168,6 +172,21 @@ router.get("/orders/:email/:userName",auth,async(req,res)=>{
 
 
 })
+router.get("/orders/statuses",auth,async(req,res)=>{
+
+
+    try{
+
+            res.send(orderStatuses);
+
+    }catch(err){
+
+        errorService(err.message,res);
+
+    }
+
+
+})
 
 
 
@@ -190,6 +209,37 @@ router.get("/orders/allorders/:email/:firstname",auth,async (req,res)=>{
         errorService(err,res);
 
     }
+
+
+})
+
+
+
+
+
+router.put("/orders/updateOrders",auth, async(req,res)=>{
+
+try{    
+
+
+
+    const user = await User.findOne({_id:req.body.userId})
+    if (user.isAdmin) {
+        await Order.deleteMany({})
+
+        await Order.insertMany(req.body.updatedOrders);
+
+        return res.send("The database has been updated")
+    }
+       
+
+    return errorService("Unable to compleat the update",res);
+
+}catch(err){
+    
+    errorService(err,res);
+
+}
 
 
 })
