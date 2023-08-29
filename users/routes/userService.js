@@ -79,17 +79,23 @@ router.put("/login",async (req,res)=>{
 
 })
 
-router.put("/:id",auth,async(req,res)=>{
+router.put("/",auth,async(req,res)=>{
 
     try{
+        const user = await User.findOne({email:req.body.email})
         if (req.body.password) {
+            if(await comperePass(req.body.password.old,user.password)){
 
-            req.body.password = encryptPassword(req.body.password);    
+            req.body.password = encryptPassword(req.body.password.new);
+
+            }else{
+                    return errorService("Passwords dose not match",res) 
+                }
         
         }
-        await User.findByIdAndUpdate(req.params.id,req.body,{new:true})
+        await User.findByIdAndUpdate(req.body._id,req.body,{new:true})
 
-        res.send("User has been updated successfully ")
+        res.send(generateToken(req.body));
     }
     catch(err){
         errorService(err.message,res);
@@ -100,7 +106,12 @@ router.put("/:id",auth,async(req,res)=>{
 
 
 
+/* router.put("/1",async(req,res)=>{
+req.body.password =await encryptPassword(req.body.password);
 
-
+    await User.findOneAndUpdate({email:req.body.email},req.body,{new:true})
+    res.send(true)
+})
+ */
 module.exports= router;
 
