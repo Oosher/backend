@@ -99,18 +99,27 @@ router.put("/:id",auth,async (req,res)=>{
 })
 
 
-router.delete("/:id",auth,async(req,res)=>{
+router.delete("/:productId/:userId",auth,async(req,res)=>{
     
     try{
-        const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+
+        const user  = await User.findById(req.params.userId)
+        if(user.isAdmin){ 
+        const deletedProduct = await Product.findByIdAndDelete(req.params.productId);
         if (deletedProduct===null) {
-            errorService("Product was not found",res);
+            return errorService("Product was not found",res);
         }
         else{
-        
-            res.send("Product was deleted successfully")
+            
+            return res.send("Product was deleted successfully")
         }
 
+    }
+    else{
+
+        return errorService("Unauthorized user")
+
+    }
 
     }catch(err){
         errorService("Product was not found",res);
