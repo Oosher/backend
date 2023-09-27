@@ -13,8 +13,7 @@
 - [Authentication](#authentication)
 - [Security](#security)
 - [Technologies Used](#technologies-used)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Introduction
 The Project Store Website Backend is the server-side component of the e-commerce platform. It utilizes MongoDB for database storage, bcrypt for password encryption, JWT for authentication, and integrates several tools and libraries such as Express.js, Express Router, Morgan, and Joi for building and managing RESTful APIs.
