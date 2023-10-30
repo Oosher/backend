@@ -37,7 +37,7 @@ api.use((err,req,res,next)=>{
 
 
 
-api.listen(8181,()=>{
+api.listen(process.env.PORT || 8181,()=>{
     console.log(chalk.green.bgCyan("server is Listening"));
     connectToDb();
 })
